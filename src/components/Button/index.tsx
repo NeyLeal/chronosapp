@@ -1,15 +1,16 @@
 import styles from './styles.module.css'
 
 type ButtonProps = {
-  id: string;
-  labelText?: string; 
+  icon: React.ReactNode;
+  color?: 'green'| 'red';
 } & React.ComponentProps<'button'>;
 
-export function Button({id, type, labelText, ...rest}: ButtonProps) {
+export function Button({icon, color = 'green', ...props}: ButtonProps) {
   return (
     <>
-      {labelText && <label htmlFor={id}>{labelText}</label>}
-      {/* <input className={styles.button} id={id} type={type} {...rest}/> */}
+      <button className={`${styles.button} ${styles[color]}`} {...props}>
+        {icon}
+      </button>
     </>
   );
 }

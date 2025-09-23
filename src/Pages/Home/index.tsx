@@ -1,9 +1,15 @@
 import { Container } from "../../components/Container";
 import { CountDown } from "../../components/CountDown";
 import { MainForm } from "../../components/MainForm";
+import type { TasksStateModel } from "../../models/TaskStateModel";
 import { MainTemplate } from "../../Templates/MainTemplate";
 
-export function Home() {
+type HomeProps = {
+  state: TasksStateModel;
+  setState: React.Dispatch<React.SetStateAction<TasksStateModel>>;
+};
+
+export function Home(props: HomeProps) {
   return (
     <MainTemplate>
       <Container>

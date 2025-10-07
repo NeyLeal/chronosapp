@@ -26,11 +26,12 @@
 }
 
 .genericHtml a:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .genericHtml ul {
   padding-left: 2.4rem;
+  list-style-type: none;
 }
 
 .genericHtml li {

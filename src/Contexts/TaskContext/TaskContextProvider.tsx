@@ -35,12 +35,19 @@ export function TaskContextProvider({ children }: TaskContextProvider) {
     }
   });
 
-  console.log(state);
-
   useEffect(() => {
     if (!state.activeTask) {
       worker.terminate();
     }
+
+    document.title =
+      `${
+        state.formattedSegondsRemaining == "00:00"
+          ? "Chronos Pomodoro"
+          : state.formattedSegondsRemaining
+      }` +
+      "  " +
+      `${state.activeTask?.name ? state.activeTask?.name : ""}`;
     worker.portMessage(state);
   }, [worker, state]);
 

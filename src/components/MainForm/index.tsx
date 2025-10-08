@@ -9,7 +9,6 @@ import { getNextCycle } from "../../utils/GetNextCycle";
 import { getNextCycleType } from "../../utils/GetNextCycleType";
 import { TaskActionTypes } from "../../Contexts/TaskContext/TaskActions";
 import { Tips } from "../Tips";
-import { toast } from "react-toastify";
 import { showMessage } from "../../Adapters/showMessage";
 
 export function MainForm() {
@@ -25,7 +24,7 @@ export function MainForm() {
     showMessage.dismiss();
 
     if (taskNameInput === null) return;
-    const taskName = taskNameInput.current.value.trim();
+    const taskName = taskNameInput.current?.value.trim();
     if (!taskName) {
       showMessage.warn("Digite o nome da tarefa!");
       return;

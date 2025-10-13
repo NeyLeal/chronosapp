@@ -7,19 +7,36 @@ import styles from "./styles.module.css";
 import { useTaskContext } from "../../Contexts/TaskContext/useTaskContext";
 import { formatDate } from "../../utils/FormatDate";
 import { GetTaskStatus } from "../../utils/GetTaskStatus";
-import { TaskActionTypes } from "../../Contexts/TaskContext/TaskActions";
 import { GenericHtml } from "../../components/GenericHTML";
+import { showMessage } from "../../Adapters/showMessage";
+import { useEffect, useState } from "react";
+import { TaskActionTypes } from "../../Contexts/TaskContext/TaskActions";
 
 export function History() {
   const { state, dispatch } = useTaskContext();
+  const [confirmClearHistory, setConfrimClearHistory] = useState(false);
   const hasTasks = state.tasks.length > 0;
   const sortedTasks = [...state.tasks].sort((a, b) => {
     return b.startDate - a.startDate;
   });
 
-  function handleResetHistory() {
-    if (!confirm("Gostaria de apagar o histórico?")) return;
+  useEffect(() => {
+    return () => {
+      showMessage.dismiss();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!confirmClearHistory) return;
+    setConfrimClearHistory(false);
     dispatch({ type: TaskActionTypes.RESET_TASK });
+  }, [confirmClearHistory, dispatch]);
+
+  function handleResetHistory() {
+    showMessage.dismiss();
+    showMessage.confirm("Gostaria de apagar o histórico?", (confirmation) => {
+      setConfrimClearHistory(confirmation);
+    });
   }
 
   return (
@@ -75,7 +92,7 @@ export function History() {
           </div>
         )) || (
           <GenericHtml>
-            <h3>Ainda nao há tarefas.</h3>
+            <h3>Ainda não existem tarefas criadas.</h3>
           </GenericHtml>
         )}
       </Container>

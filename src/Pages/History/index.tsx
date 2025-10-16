@@ -19,7 +19,9 @@ export function History() {
   const sortedTasks = [...state.tasks].sort((a, b) => {
     return b.startDate - a.startDate;
   });
-
+  useEffect(() => {
+    document.title = "Histórico - Chronos Pomodoro";
+  }, []);
   useEffect(() => {
     return () => {
       showMessage.dismiss();

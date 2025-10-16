@@ -4,24 +4,28 @@ import { Heading } from "../../components/Heading";
 import { Input } from "../../components/Input";
 import { MainTemplate } from "../../Templates/MainTemplate";
 import { Button } from "../../components/Button";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useTaskContext } from "../../Contexts/TaskContext/useTaskContext";
 import { showMessage } from "../../Adapters/showMessage";
+import { TaskActionTypes } from "../../Contexts/TaskContext/TaskActions";
 
 export function Settings() {
-  const { state } = useTaskContext();
+  const { state, dispatch } = useTaskContext();
   const workTimeInput = useRef<HTMLInputElement>(null);
   const formErrors = [];
   const shortBreakTimeInput = useRef<HTMLInputElement>(null);
   const longBreakTimeInput = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    document.title = "Configurações - Chronos Pomodoro";
+  }, []);
   function handleSaveSettings(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     showMessage.dismiss();
     const workTime = Number(workTimeInput.current?.value);
-    const shotBreakTime = Number(shortBreakTimeInput.current?.value);
+    const shortBreakTime = Number(shortBreakTimeInput.current?.value);
     const longBreakTime = Number(longBreakTimeInput.current?.value);
 
-    if (isNaN(workTime) || isNaN(shotBreakTime) || isNaN(longBreakTime)) {
+    if (isNaN(workTime) || isNaN(shortBreakTime) || isNaN(longBreakTime)) {
       formErrors.push("Por favor utilize somente números");
     }
 
@@ -29,7 +33,7 @@ export function Settings() {
       formErrors.push("Digite valores entre 1 e 99 para Foco");
     }
 
-    if (shotBreakTime < 1 || shotBreakTime > 30) {
+    if (shortBreakTime < 1 || shortBreakTime > 30) {
       formErrors.push("Digite valores entre 1 e 30 para Foco");
     }
 
@@ -43,6 +47,15 @@ export function Settings() {
       });
       return;
     }
+    dispatch({
+      type: TaskActionTypes.CHANGE_SETTINGS,
+      payload: {
+        workTime,
+        shortBreakTime,
+        longBreakTime,
+      },
+    });
+    showMessage.success("Configurações salvas!");
   }
 
   return (
@@ -65,6 +78,7 @@ export function Settings() {
               ref={workTimeInput}
               defaultValue={state.config.workTime}
               type="number"
+              maxLength={2}
             ></Input>
           </div>
           <div className="formRow">
@@ -74,6 +88,7 @@ export function Settings() {
               ref={shortBreakTimeInput}
               defaultValue={state.config.shortBreakTime}
               type="number"
+              maxLength={2}
             ></Input>
           </div>
           <div className="formRow">
@@ -83,6 +98,7 @@ export function Settings() {
               ref={longBreakTimeInput}
               defaultValue={state.config.longBreakTime}
               type="number"
+              maxLength={2}
             ></Input>
           </div>
           <div className="formRow">

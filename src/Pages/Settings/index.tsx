@@ -12,7 +12,7 @@ import { TaskActionTypes } from "../../Contexts/TaskContext/TaskActions";
 export function Settings() {
   const { state, dispatch } = useTaskContext();
   const workTimeInput = useRef<HTMLInputElement>(null);
-  const formErrors = [];
+  const formErrors: string[] = [];
   const shortBreakTimeInput = useRef<HTMLInputElement>(null);
   const longBreakTimeInput = useRef<HTMLInputElement>(null);
   useEffect(() => {
